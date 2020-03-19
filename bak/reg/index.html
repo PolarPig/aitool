@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="ecgdraw.css">
+    <script src="jquery-2.2.3.min.js"></script>
+    <script src="jqColorPicker.min.js"></script>
+    <title>单导心电人工智能辅助分析软件</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="e ecg_nav_header">
+        <header class="ecg_box_header">
+            <div class="head-item">
+                <div class="log-box">
+                    <img src="./img/logo_top.png" alt="">
+                </div>
+                <div class="tudan-flex tudan-two-lines">
+                    <span class="rowing">单导心电人工智能辅助分析软件</span>
+                    <span>ECG DATA ANALYSIS SOFTWARE</span>
+                </div>
+            </div>
+            <div class="head-item">
+                <div>
+                    <img class="user_avatar" src="./img/img_default_avatar.png" alt="">
+                </div>
+                <div class="user_name">欢迎您，<span>admin</span></div>
+                <div class="inco_set tudan-flex tudan-xjz tudan-yjz">
+                    <img src="./img/icon_top_set.png" alt="">
+                </div>
+                <div class="inco_set_window">
+                    <div class="head">设置</div>
+                    <div class="body">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr>
+                                    <th>名称</th>
+                                    <th class="abbr">简写</th>
+                                    <th class="hotkey">热键</th>
+                                    <th class="bgcolor">颜色</th>
+                                </tr>
+                                <tr>
+                                    <td>正常(窦性心律)</td>
+                                    <td class="abbr">N</td>
+                                    <td class="hotkey">N</td>
+                                    <td class="bgcolor" bgcolor="#fff"></td>
+                                </tr>
+                                <tr>
+                                    <td>室早、R-on-T</td>
+                                    <td class="abbr">V</td>
+                                    <td class="hotkey">V</td>
+                                    <td class="bgcolor" bgcolor="#f904f9"></td>
+                                </tr>
+                                <tr>
+                                    <td>交界性早搏</td>
+                                    <td class="abbr">J</td>
+                                    <td class="hotkey">J</td>
+                                    <td class="bgcolor" bgcolor="#9acd32"></td>
+                                </tr>
+                                <tr>
+                                    <td>房性早搏</td>
+                                    <td class="abbr">S</td>
+                                    <td class="hotkey">S</td>
+                                    <td class="bgcolor" bgcolor="#fdfd05"></td>
+                                </tr>
+                                <tr>
+                                    <td>室性逸博</td>
+                                    <td class="abbr">VE</td>
+                                    <td class="hotkey">VE</td>
+                                    <td class="bgcolor" bgcolor="#fe0000"></td>
+                                </tr>
+                                <tr>
+                                    <td>交界性逸博</td>
+                                    <td class="abbr">JE</td>
+                                    <td class="hotkey">JE</td>
+                                    <td class="bgcolor" bgcolor="#3f7f7e"></td>
+                                </tr>
+                                <tr>
+                                    <td>伪差</td>
+                                    <td class="abbr">X</td>
+                                    <td class="hotkey">X</td>
+                                    <td class="bgcolor" bgcolor="#313330"></td>
+                                </tr>
+                                <tr>
+                                    <td>房性逸博</td>
+                                    <td class="abbr">SE</td>
+                                    <td class="hotkey">SE</td>
+                                    <td class="bgcolor" bgcolor="#7f3f01"></td>
+                                </tr>
+                                <tr>
+                                    <td>差异传导</td>
+                                    <td class="abbr">C</td>
+                                    <td class="hotkey">C</td>
+                                    <td class="bgcolor" bgcolor="#037fff"></td>
+                                </tr>
+                                <tr>
+                                    <td>心室起搏</td>
+                                    <td class="abbr">P</td>
+                                    <td class="hotkey">P</td>
+                                    <td class="bgcolor" bgcolor="#02006d"></td>
+                                </tr>
+                                <tr>
+                                    <td>心房起搏</td>
+                                    <td class="abbr">A</td>
+                                    <td class="hotkey">A</td>
+                                    <td class="bgcolor" bgcolor="#fc6902"></td>
+                                </tr>
+                                <tr>
+                                    <td>房室顺序起搏</td>
+                                    <td class="abbr">D</td>
+                                    <td class="hotkey">D</td>
+                                    <td class="bgcolor" bgcolor="#6d003a"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="foot">
+                        <button type="button" class="btn">确定</button>
+                        <button type="button" class="btn cancel">取消</button>
+                    </div>
+                </div>
+                <div class="inco_exit tudan-flex tudan-xjz tudan-yjz">
+                    <img src="./img/icon_top_close.png" alt="">
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="e ecg_box">
+        <!-- 主体内容 -->
+        <section class="ecg_content tudan-flex">
+            <!-- 左侧 -->
+            <div class="l_content">
+                <div class="btn-group mgb-18">
+                    <button id="open" type="button">打开数据</button>
+                    <form>
+                        <input id="upload" type="file" name="file" accept=".ecg" hidden>
+                    </form>
+                </div>
+                <div class="c-title">用户信息</div>
+                <div class="user_info">
+                    <div>姓名：土旦先生</div>
+                    <div>性别：男</div>
+                    <div>年龄：23岁</div>
+                    <div>身高：178CM</div>
+                    <div>体重：65KG</div>
+                    <div>数据长度：4分36秒</div>
+                    <div>电话：13800000000</div>
+                </div>
+                <div class="c-title">操作菜单</div>
+                <div class="icon_preview btns-group btns-group-active tudan-flex tudan-yjz tudan-xjz mgb-18">
+                    <i>
+                        <img src="./img/icon_preview.png" alt="">
+                    </i>
+                    <span>报告预览</span>
+                </div>
+                <div class="icon_upload btns-group tudan-flex tudan-yjz tudan-xjz mgb-18">
+                    <i>
+                        <img src="./img/icon_upload.png" alt="">
+                    </i>
+                    <span>上传报告</span>
+                </div>
+                <div class="icon_export btns-group tudan-flex tudan-yjz tudan-xjz mgb-18">
+                    <i>
+                        <img src="./img/icon_export.png" alt="">
+                    </i>
+                    <span>导出报告</span>
+                </div>
+                <div class="icon_print btns-group tudan-flex tudan-yjz tudan-xjz mgb-18">
+                    <i>
+                        <img src="./img/icon_print.png" alt="">
+                    </i>
+                    <span>打印报告</span>
+                </div>
+            </div>
+            <!-- 正文 -->
+            <div class="c_content" id="canvasDiv">
+                <div class="navs tudan-flex">
+                    <div class="item">
+                        <span>N</span>
+                    </div>
+                    <div class="item">
+                        <span>S</span>
+                    </div>
+                    <div class="item">
+                        <span>SE</span>
+                    </div>
+                    <div class="item">
+                        <span>V</span>
+                    </div>
+                    <div class="item">
+                        <span>VE</span>
+                    </div>
+                    <div class="item">
+                        <span>J</span>
+                    </div>
+                    <div class="item">
+                        <span>JE</span>
+                    </div>
+                    <div class="item">
+                        <span>C</span>
+                    </div>
+                    <div class="item">
+                        <span>X</span>
+                    </div>
+                    <div class="item">
+                        <span>P</span>
+                    </div>
+                    <div class="item">
+                        <span>A</span>
+                    </div>
+                    <div class="item">
+                        <span>D</span>
+                    </div>
+                    <div class="item normal" id="lowgird">
+                        <span>底格</span>
+                    </div>
+                    <div class="item normal" id="lowpos">
+                        <span>定位</span>
+                    </div>
+                    <div class="item normal" id="scale">
+                        <span>标尺</span>
+                    </div>
+                    <div class="item large">
+                        <span>增益程度</span>
+                        <span>
+                            <svg t="1556241363604" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="3645"
+                                width="16" height="16">
+                                <path d="M862.752 326.016H161.248l349.696 371.936L862.72 326.016z" p-id="3646"
+                                    fill="#bfbfbf"></path>
+                            </svg>
+                        </span>
+                        <ul>
+                            <li><span>内容1</span></li>
+                            <li><span>内容2</span></li>
+                            <li><span>内容3</span></li>
+                        </ul>
+                    </div>
+                    <div class="item large">
+                        <span>走纸速度</span>
+                        <span>
+                            <svg t="1556241363604" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="3645"
+                                width="16" height="16">
+                                <path d="M862.752 326.016H161.248l349.696 371.936L862.72 326.016z" p-id="3646"
+                                    fill="#bfbfbf"></path>
+                            </svg>
+                        </span>
+                        <ul>
+                            <li><span>内容1</span></li>
+                            <li><span>内容2</span></li>
+                            <li><span>内容3</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="main_top" id="maindiv">
+                    <canvas id="drawcanvas" width="990" height="700"></canvas>
+                </div>
+
+                <div class="main_middle tudan-flex">
+                    <div>
+                        <canvas id="navcanvas" width="470" height="120"></canvas>
+                    </div>
+                    <div>
+                        <canvas id="chartcanvas" width="470" height="120"></canvas>
+                    </div>
+                </div>
+
+                <div class="main_bottom tudan-flex">
+                    <div>
+                        <p><span class="ecg_impression_title">心电图印象</span></p>
+                        <div class="ecg_impression_body">
+                        </div>
+                    </div>
+                    <div>
+                        <p>
+                            <span class="ecg_result_title">心电图结论</span>
+                            <select id="insert"></select>
+                        </p>
+                        <textarea class="ecg_result_body"></textarea>
+                    </div>
+                </div>
+                <p style="color: #7f8495;font-size: 14px;text-align: center;">当前选中时间： 3 分 10 秒；当前选中第 10 个心搏，共有 359 个心搏
+                </p>
+
+                <div id="wrap" style="display:none;">
+                    <input type="button" id="nid" value="N">
+                    <input type="button" id="sid" value="S" style="color: red;">
+                    <input type="button" id="vid" value="V" style="color: yellow;">
+                </div>
+                <div id="showqrs" class="showqrs">
+                    <div class="head">
+                        <p>修改编辑框</p>
+                    </div>
+                    <div class="body">
+                        <canvas id="qrs" width="950" height="441"></canvas>
+                    </div>
+                    <div class="foot">
+                        <button type="button" class="btn">确定</button>
+                        <button type="button" class="btn showqrs_cancel">取消</button>
+                    </div>
+                </div>
+                <div id="rulerDiv" class="ruler">
+                    <div class="rulerVertical"></div>
+                    <div class="rulerHorizontal"></div>
+                </div>
+            </div>
+            <!-- 右侧 -->
+            <div class="r_content">
+                <div class="r_title">基本参数</div>
+                <div class="zhibiao_title tudan-flex">
+                    <span>测量指标</span>
+                    <span>测量值</span>
+                    <span>参考范围</span>
+                </div>
+                <div class="zhibiao_box">
+                    <div class="item">
+                        <span>心率</span>
+                        <span>120</span>
+                        <span>60~100bpm</span>
+                    </div>
+                    <div class="item">
+                        <span>P波振幅</span>
+                        <span>120</span>
+                        <span>0.05~0.25mv</span>
+                    </div>
+                    <div class="item">
+                        <span>P波时限</span>
+                        <span>120</span>
+                        <span>60~110ms</span>
+                    </div>
+                    <div class="item">
+                        <span>P波方向</span>
+                        <span>120</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>P波形态</span>
+                        <span>120</span>
+                        <span>直立圆钝</span>
+                    </div>
+                    <div class="item">
+                        <span>PR间期</span>
+                        <span>120</span>
+                        <span>120~210ms</span>
+                    </div>
+                    <div class="item">
+                        <span>PR段形态</span>
+                        <span>120</span>
+                        <span>水平型</span>
+                    </div>
+                    <div class="item">
+                        <span>Q波振幅</span>
+                        <span>120</span>
+                        <span>0~0.5mv</span>
+                    </div>
+                    <div class="item">
+                        <span>Q波时限</span>
+                        <span>120</span>
+                        <span>0~30ms</span>
+                    </div>
+                    <div class="item">
+                        <span>R波振幅</span>
+                        <span>120</span>
+                        <span>≤1.5mv</span>
+                    </div>
+                    <div class="item">
+                        <span>Q波振幅/R波振幅</span>
+                        <span>120</span>
+                        <span>&lt0.25</span>
+                    </div>
+                    <div class="item">
+                        <span>QRS波时限</span>
+                        <span>120</span>
+                        <span>60~110ms</span>
+                    </div>
+                    <div class="item">
+                        <span>QRS主波方向</span>
+                        <span>120</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>是否有J波</span>
+                        <span>120</span>
+                        <span>一般无</span>
+                    </div>
+                    <div class="item">
+                        <span>PJ间期</span>
+                        <span>120</span>
+                        <span>≤260ms</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段抬高</span>
+                        <span>120</span>
+                        <span>&lt;0.10mv</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段压低</span>
+                        <span>120</span>
+                        <span>&lt;0.05mv</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段时限</span>
+                        <span>120</span>
+                        <span>50~150ms</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段形态</span>
+                        <span>120</span>
+                        <span>水平型</span>
+                    </div>
+                    <div class="item">
+                        <span>T波振幅</span>
+                        <span>120</span>
+                        <span>0.1~1.0mv</span>
+                    </div>
+                    <div class="item">
+                        <span>T波振幅/R波振幅</span>
+                        <span>120</span>
+                        <span>&gt;0.1</span>
+                    </div>
+                    <div class="item">
+                        <span>T波方向</span>
+                        <span>120</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>T波形态</span>
+                        <span>120</span>
+                        <span>直立圆钝</span>
+                    </div>
+                    <div class="item">
+                        <span>QT间期</span>
+                        <span>120</span>
+                        <span>320~480ms</span>
+                    </div>
+                    <div class="item">
+                        <span>QTc</span>
+                        <span>120</span>
+                        <span>320~480ms</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="m">
+        <div id="spinners">
+            <div id="preloader"></div>
+        </div>
+    </div>
+    <script src="ecgdraw.copy.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        // 心电波
+        var g_canvasId = "drawcanvas";
+        // 导航
+        var g_navcanvasId = "navcanvas";
+        // 导航 折线图
+        var g_chartcanvasId = "chartcanvas";
+        // 单导 QRS波
+        var g_qrscanvasId = "qrs";
+
+        $(function () {
+            $('.bgcolor').colorPicker();
+
+            // 设置
+            $('.inco_set').on('click', function () {
+                $('.inco_set_window').fadeIn();
+            });
+            $('.inco_set_window>.foot>.cancel').on('click', function () {
+                $('.inco_set_window').fadeOut();
+            });
+            // 打开数据
+            $('#open').on('click', function () {
+                $('#upload').click();
+            });
+
+            $('#upload').on('change', function () {
+                $('#m').fadeIn();
+                let formData = new FormData();
+                let file = this.files[0];
+                formData.append('file', file);
+                formData.append('fileName', file.name);
+                console.log(file);
+                console.log(formData);
+                if (file) {
+                    var fileSize = 0;
+                    if (file.size > 1024 * 1024) {
+                        fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                    }
+                    else {
+                        fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+                    }
+                };
+                alert("fileName : " + file.name + "\nfileSize : " + fileSize + "\nfileType : " + file.type);
+                // let url = 'http://api-test.995120.cn/dws/ecg/analyze',
+                let url = 'http://192.168.1.213:2160/dws/ecg/analyze',
+                    param = {
+                        method: 'POST',
+                        body: formData,
+                    };
+                fetch(url, param).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log(res);
+                    };
+                }).then(data => {
+                    $('#m').fadeOut();
+                    console.log(data);
+                    console.log(data.rrDats);
+                    console.log(data.ecg_result);
+                    $('.ecg_impression_body').append("<p>" + data.ecg_result + "</p>");
+
+                }).catch(err => {
+
+                    $('#m').fadeOut();
+                    console.log('error:', err);
+
+                });
+
+            });
+            // setInterval(() => {
+            //     let x = $('#m').css('display');
+            //     if (x == 'block') {
+            //         $('#m').fadeOut();
+            //     }
+            // }, 3000);
+
+            // 修改编辑框
+            $('.showqrs_cancel').on('click', function () {
+                $('#showqrs').css('display', 'none');
+            });
+            // 上传报告
+            $('.icon_upload').on('click', function () {
+                alert(200);
+            });
+            // 导出报告
+            $('.icon_export').on('click', function () {
+                let data = {
+                    "assistantId": "1064",
+                    "bt": "2019-05-15 00:00:00",
+                    "dateStatus": "3",
+                    "doctorId": "51",
+                    "et": ""
+                },
+                    dataX = JSON.stringify(data),
+                    url = 'http://api-test.995120.cn/dws/file/downAchievement',
+                    param = {
+                        method: 'POST',
+                        body: data
+                    };
+                // console.log(data);
+                // console.log(dataX);
+                fetch(url, param).then(res => {
+                    if (res.ok) {
+                        console.log(res);
+                        return res.json();
+                    } else {
+                        console.log(res);
+                    }
+                }).then(data => {
+                    console.log(data);
+                }).catch(err => {
+                    console.log(err);
+                });
+            });
+
+            // 查询医生信息
+            (function drInfo() {
+                let url = 'http://api-test.995120.cn/dws/',
+                    param = {
+                        method: 'POST',
+                        body: data = JSON.stringify({
+                            "reqHead": {
+                                "functionId": "DWS001001002",
+                            },
+                            "body": {
+                                "id": "1031"
+                            }
+                        }),
+                    };
+                fetch(url, param).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log(res);
+                    }
+                }).then(data => {
+                    $(".user_name span").text(data.body.data.doctorName);
+                    $(".user_avatar").attr('src', data.body.data.photo);
+                }).catch(e => {
+                    console.log('err', e);
+                });
+            })();
+            // 热键
+            (function hotkey() {
+                let url = 'http://api-test.995120.cn/dws/',
+                    param = {
+                        method: 'POST',
+                        body: data = JSON.stringify({
+                            "reqHead": {
+                                "functionId": "DWS001004001",
+                            },
+                            "body": {
+                                "doctorId": "1"
+                            }
+                        }),
+                    };
+                fetch(url, param).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log(res);
+                    }
+                }).then(data => {
+                    // console.log(data);
+                }).catch(e => {
+                    console.log('err', e);
+                });
+            })();
+            // 加载待插入数据
+            (function insert() {
+                $('#insert').empty();
+                let url = 'http://api-test.995120.cn/dws/',
+                    param = {
+                        method: 'POST',
+                        body: data = JSON.stringify({
+                            "reqHead": {
+                                "functionId": "DWS001002006",
+                            },
+                            "body": ""
+                        }),
+                    };
+                fetch(url, param).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log(res);
+                    }
+                }).then(data => {
+                    let json = data.body.data;
+                    $('#insert').append("<option value='none'>请选择需要插入到心电结论</option>");
+                    $.each(json, (index, item) => {
+                        $('#insert').append("<option value='" + index + "'>" + item + "</option>")
+                    });
+                }).catch(e => {
+                    $('#insert').append("<option value='none'>服务器连接失败</option>");
+                });
+            })();
+
+            // 插入选中项操作
+            $('#insert').on('change', function () {
+                let ax = $(this).val();
+                let ex = $('#insert option:selected').text();
+                console.log(ax, ex);
+
+                if ($(this).val() != 'none') {
+                    $('.ecg_result_body').val($('.ecg_result_body').val() + ex + '，');
+                } else {
+                    return;
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

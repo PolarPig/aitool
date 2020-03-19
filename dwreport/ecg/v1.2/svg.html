@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网页标题</title>
+</head>
+<script type="text/javascript" src="svg/svgPath.js"></script>
+<script language="javascript">
+var svgObject=null;
+function Excute(){
+	var svg=new svgGraphic();
+			var vxArr=new Array(new Array('16','red'),new Array('12','yellow'));
+			svg.Load(0,0,800,600,"#666666",1,30,30,1,50,50,0,1,"时",0,1,"℃","坐标系统的标题","当前是2010年2月3日-2010年9月23日数据",vxArr);
+			svg.createPath(svg.myG2,"pid","none",1,"red","顶板离层仪1号面板",100,40,"12px");
+			svg.createPath(svg.myG2,"pid2","none",1,"blue","顶板离层仪2号面板",275,40,"12px");
+			svg.createPath(svg.myArea,"pid3","none","black",1,"顶板离层仪3号面板",450,40,"12px");
+			svg.createPath(svg.myArea,"pid4","none","yellow",1,"顶板离层仪4号面板",625,40,"12px");
+			svg.createPath(svg.myArea,"pid","none","green",1,"顶板离层仪5号面板",100,55,"12px");
+			svg.createPath(svg.myArea,"pid2","none","gray",1,"顶板离层仪6号面板",275,55,"12px");
+			svg.createPath(svg.myArea,"pid3","none","#dd4455",1,"顶板离层仪7号面板",450,55,"12px");
+			svg.createPath(svg.myArea,"pid4","none","#cc00ff",1,"顶板离层仪8号面板",625,55,"12px");
+
+//		    ----首次加载图形-----Begin---------------------------------------------
+			var ax="M"+svg.getX(0)+" "+svg.getY(0)+"L"+svg.getX(2)+" "+svg.getY(4)+"L"+svg.getX(3)+" "+svg.getY(14)+"L"+svg.getX(4)+" "+svg.getY(2)+"L"+svg.getX(5)+" "+svg.getY(7)+"L"+svg.getX(6)+" "+svg.getY(16)+"L"+svg.getX(7)+" "+svg.getY(2)+"L"+svg.getX(8)+" "+svg.getY(11)+"L"+svg.getX(9)+" "+svg.getY(3.5);
+			svg.meDocument.getElementById("pid").setAttribute("d",ax);
+			svg.createDot(svg.myG2,"did1",svg.getX(0),svg.getY(0),10,"red");
+			svg.createDot(svg.myG2,"did2",svg.getX(2),svg.getY(4),10,"red");
+			svg.createDot(svg.myG2,"did3",svg.getX(3),svg.getY(14),10,"red");
+			svg.createDot(svg.myG2,"did4",svg.getX(4),svg.getY(2),10,"red");
+			svg.createDot(svg.myG2,"did5",svg.getX(5),svg.getY(7),10,"red");
+			svg.createDot(svg.myG2,"did6",svg.getX(6),svg.getY(16),10,"red");
+			svg.createDot(svg.myG2,"did7",svg.getX(7),svg.getY(2),10,"red");
+			svg.createDot(svg.myG2,"did8",svg.getX(8),svg.getY(11),10,"red");
+			svg.createDot(svg.myG2,"did9",svg.getX(9),svg.getY(3.5),10,"red");
+
+			var ax2="M"+svg.getX(0)+" "+svg.getY(4)+"L"+svg.getX(1)+" "+svg.getY(14)+"L"+svg.getX(2)+" "+svg.getY(2)+"L"+svg.getX(3)+" "+svg.getY(7)+"L"+svg.getX(4)+" "+svg.getY(16)+"L"+svg.getX(5)+" "+svg.getY(2)+"L"+svg.getX(6)+" "+svg.getY(11)+"L"+svg.getX(7)+" "+svg.getY(3.5);
+			svg.meDocument.getElementById("pid2").setAttribute("d",ax2);
+			svg.createDot(svg.myG2,"did2",svg.getX(0),svg.getY(4),10,"blue");
+			svg.createDot(svg.myG2,"did3",svg.getX(1),svg.getY(14),10,"blue");
+			svg.createDot(svg.myG2,"did4",svg.getX(2),svg.getY(2),10,"blue");
+			svg.createDot(svg.myG2,"did5",svg.getX(3),svg.getY(7),10,"blue");
+			svg.createDot(svg.myG2,"did6",svg.getX(4),svg.getY(16),10,"blue");
+			svg.createDot(svg.myG2,"did7",svg.getX(5),svg.getY(2),10,"blue");
+			svg.createDot(svg.myG2,"did8",svg.getX(6),svg.getY(11),10,"blue");
+			svg.createDot(svg.myG2,"did9",svg.getX(7),svg.getY(3.5),10,"blue");
+
+		//动态显示
+		mov(svg);
+}
+
+	//path动态画线
+		var px=9;
+		var ii=0;
+		var dx="";
+		var dy="";
+	function mov(svgStr){
+		svgObject=svgStr;
+		if(dx==""){
+			dx=svgStr.getX(9);
+			dy=svgStr.getY(3.5);
+		}
+		px+=1;
+		var randomCount=Math.random()*16;
+		var dstr="";
+		dstr+="M"+dx+" "+dy+"L "+(px*svgStr.xmaxValue)+" "+(svgStr.aH-2*svgStr.yBottom-(randomCount)*svgStr.ymaxValue)+"Z";
+
+		svgStr.createPaths(svgStr.myG2,"pid"+px,"none",1,"red",dstr);
+
+		dx=px*svgStr.xmaxValue;
+		dy=svgStr.aH-2*svgStr.yBottom-(randomCount)*svgStr.ymaxValue;
+
+		svgStr.createDot(svgStr.myG2,"did"+px,(px*svgStr.xmaxValue),(svgStr.aH-2*svgStr.yBottom-(randomCount)*svgStr.ymaxValue),10,"red");
+
+		if((px*svgStr.xmaxValue)>=(svgStr.aW-2*svgStr.xLeft)){
+			ii-=1;//与px自增幅度相关
+			svgStr.moveBy(ii);
+			movxt(ii,svgStr);
+		}
+		setTimeout("mov(svgObject)",500);
+	}
+	//让x轴坐标一块动
+		var xt="";
+		var pxt=0;
+		function movxt(str,svgStr){
+			if(xt==""){
+				xt=(Math.floor((svgStr.aW-2*svgStr.xLeft)/svgStr.xSpace)+1)*svgStr.xSpace;
+			}
+			else{
+				xt+=svgStr.xSpace;
+			}
+			svgStr.createText(svgStr.myG3,"t",xt,svgStr.yBottom-30,"red",pxt+svgStr.ytextUnit,"12px");
+			pxt+=1;
+			if(pxt>23){
+				pxt=0;
+			}
+			svgStr.moveByxt(str);
+		}
+</script>
+<body topmargin="0">
+<embed id="ccjSVG" src="svg/svgPath.svg" width="100%" height="600" pluginspage="http://www.adobe.com/svg/viewer/install/" type="image/svg+xml">
+</body>
+</html>

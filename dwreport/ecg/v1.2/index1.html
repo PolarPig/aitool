@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>实时心电图</title>
+	</head>
+
+	<body>
+		<div style="position: relative;">
+			<canvas id="lowgird" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+			<canvas id="ecg" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg2" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg3" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg4" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg5" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg6" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg7" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<canvas id="ecg8" width="375" height="220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+			<p id="timetext" style="position: absolute; left: 0; top: 444px; z-index: 0;">250采样率、750个点 一行跑完标准3秒</p>
+			<p id="timep" style="position: absolute; left: 0; top: 464px; z-index: 1;">0秒</p>
+
+		</div>
+		<script src="../js/tool.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/ecgdata.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/drawecg.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			// 低格图层    心电波层
+			new DrawEcg().init({canvas: "ecg", datas: datas,idx:  1,color: "#32FF32",speed:  4,lowgirdvas: 'lowgird',timep: "timep"}).draw();
+			new DrawEcg().init({canvas: "ecg2",datas: datas3,idx: 2,color: "#6495ED",speed: 40}).draw();
+			new DrawEcg().init({canvas: "ecg3",datas: datas3,idx: 3,color: "#228B22",speed: 10}).draw();
+			new DrawEcg().init({canvas: "ecg4",datas: datas, idx: 4,color: "#00FFFF",speed: 15}).draw();
+			new DrawEcg().init({canvas: "ecg5",datas: datas3,idx: 5,color: "#FF0000",speed: 20}).draw();
+			new DrawEcg().init({canvas: "ecg6",datas: datas1,idx: 6,color: "#EEE8AA",speed: 15}).draw();
+			new DrawEcg().init({canvas: "ecg7",datas: datas3,idx: 7,color: "#FFA500",speed: 7 }).draw();
+			new DrawEcg().init({canvas: "ecg8",datas: datas,idx: 8,color: "#FFFF00", speed: 30}).draw();
+		</script>
+
+	</body>
+
+</html>

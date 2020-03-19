@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HTML5 + WebGL实现类似心电图形状的彩虹脉冲波</title>
+<style>
+body {
+    color: #ffffff;
+    font-family: Monospace;
+    font-size: 13px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #000;
+    margin: 0px;
+    overflow: hidden;
+}
+#container {
+    padding: 40vh 0;
+}
+#info,
+#controls {
+    position: absolute;
+    width: 100%;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.4);
+}
+#info {
+    top: 0;
+}
+#controls {
+    bottom: 0;
+}
+a {
+    color: #ffffff;
+    transition: 150ms all;
+}
+a:hover,
+a:focus {
+    color: #ffc107;
+}
+</style>
+</head>
+<body>
+<script id="fragmentShader" type="x-shader/x-fragment">
+
+uniform float time;
+uniform vec2 resolution;
+
+#define PI 3.14159265359
+#define T (time/2.)
+
+vec3 hsv2rgb(vec3 c) {
+  vec4 K = vec4(1.,2./3.,1./3.,3.);
+  vec3 p = abs(fract(c.xxx + K.xyz) * 6. - K.www);
+  return c.z * mix(K.xxx, clamp(p - K.xxx, 0., 1.), c.y);
+}
+float ease_x(float n) { // normalized Hermite h10
+  return n*(1.-n)*(1.-n)*27./4.;
+}
+float nd(float n) { // normal dist (σ=0.01,μ=0.0)
+	return exp(-n*n/0.0002)/sqrt(PI*0.0002);
+}
+float ease_y(float n) { // easeOutExpo modified by nd
+  float expo = -pow(2., -10. * n) + 1.;
+  return expo - 0.04*nd(n);
+}
+void main( void ) {
+  vec2 p = ( gl_FragCoord.xy / resolution.xy );
+  vec2 f = vec2(fract(T), 0.5);
+  float v = 1. - 2.*ease_x(fract(p.x-f.x)) - ease_y(abs(f.y-p.y));
+  float flare = 1. - pow(length(p-f)*(p.x < f.x ? 15. : 30.),.5) + 0.002*nd(fract(f.x-p.x)) + 0.01*nd(abs(f.y-p.y));
+  gl_FragColor = vec4( mix(hsv2rgb(vec3(p.x-.35, 1., v)),vec3(1.),max(0.,min(1.,flare))), 1.0 );
+}
+</script>
+<script id="vertexShader" type="x-shader/x-vertex">
+	void main()	{
+		gl_Position = vec4( position, 1.0 );
+	}
+</script>
+<div id="container"></div>
+<div id="info">Rainbow Pulse - GLSL shader - with <a rel="nofollow" rel="noreferrer"href="http://threejs.org" target="_blank">three.js</a>
+</div>
+<div id="controls">
+  <label for="resolution">resolution: </label>
+  <select id="resolution" value="2">
+    <option value="0.5">0.5x</option>
+    <option value="1" selected>1x</option>
+    <option value="2">2x</option>
+    <option value="4">4x</option>
+    <option value="8">8x</option>
+  </select>
+</div>
+
+<script src='js/three.min.js'></script>
+<script src='js/Stats.min.js'></script>
+<script>
+var lastUpdate;
+var container;
+var camera, scene, renderer;
+var uniforms;
+
+function init(showStats) {
+    // stats
+    if (showStats) {
+        var stats = new Stats();
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0';
+        stats.domElement.style.top = '0';
+        document.body.appendChild(stats.domElement);
+        requestAnimationFrame(function updateStats() {
+            stats.update();
+            requestAnimationFrame(updateStats);
+        });
+    }
+
+    // basic setup
+    container = document.getElementById('container');
+    camera = new THREE.Camera();
+    camera.position.z = 1;
+    scene = new THREE.Scene();
+    var geometry = new THREE.PlaneBufferGeometry(2, 2);
+
+    // shader stuff
+    uniforms = {
+        time: {
+            type: "f",
+            value: 1.0
+        },
+        resolution: {
+            type: "v2",
+            value: new THREE.Vector2()
+        }
+    };
+    var material = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        vertexShader: document.getElementById('vertexShader').textContent,
+        fragmentShader: document.getElementById('fragmentShader').textContent
+    });
+    lastUpdate = new Date().getTime();
+
+    // put it together for rendering
+    var mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+    renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio / 2);
+    container.appendChild(renderer.domElement);
+
+    // event listeners
+    onWindowResize();
+    window.addEventListener('resize', onWindowResize, false);
+    document.getElementById('resolution').addEventListener('change', onResolutionChange, false);
+}
+
+// events
+function onWindowResize(evt) {
+    renderer.setSize(window.innerWidth, Math.max(window.innerHeight / 5, 100));
+    uniforms.resolution.value.x = renderer.domElement.width;
+    uniforms.resolution.value.y = renderer.domElement.height;
+}
+
+function onResolutionChange(evt) {
+    var newResolutionScale = parseFloat(evt.target.value);
+    renderer.setPixelRatio(window.devicePixelRatio / newResolutionScale);
+    uniforms.resolution.value.x = renderer.domElement.width;
+    uniforms.resolution.value.y = renderer.domElement.height;
+}
+
+function animate() {
+    var currentTime = new Date().getTime()
+    var timeSinceLastUpdate = currentTime - lastUpdate;
+    lastUpdate = currentTime;
+
+    requestAnimationFrame(animate);
+    render(timeSinceLastUpdate);
+}
+
+function render(timeDelta) {
+    uniforms.time.value += (timeDelta ? timeDelta / 1000 : 0.05);
+    renderer.render(scene, camera);
+}
+
+// boot
+init(false);
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>WebGl 画线</title>
+	</head>
+
+	<body>
+		<div style="position: relative;">
+            <canvas id="lowgird" width="1500" height="2200" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+            <canvas id="ecg" width="1500" height="2220" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+		</div>
+	</body>
+
+	<script type="text/javascript" src="js/tool.js"></script>
+	<script type="text/javascript" src="js/webgldraw2.js" ></script>
+	<script type="text/javascript" src="js/ecgdata.js" ></script>
+	<script>
+		
+		window.onload = function() {
+
+			new drawGrid("lowgird")
+			new ecgdraw("ecg")
+			
+
+		}
+	</script>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zn">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>图形加载</title>
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+
+		<script src="pixi.min.js"></script>
+		<script>
+			var app = new PIXI.Application({
+				width: 256,
+				height: 256,
+				antialias: true,
+				transparent: false,
+				resolution: 1
+			});
+			document.body.appendChild(app.view);
+			PIXI.loader
+				.add("images/cat.png")
+				.load(setup);
+
+			function setup() {
+				var cat = new PIXI.Sprite(PIXI.loader.resources["images/cat.png"].texture);
+				cat.x = 96;
+				cat.y = 96;
+				
+//				cat.width = 80; //宽高
+//				cat.height = 120;
+
+//				cat.scale.x = 0.5; //缩放大小
+//				cat.scale.y = 0.5;
+//				cat.scale.set(0.5, 0.5);// 缩放大小
+
+//				cat.rotation = 0.5; //角度
+
+//				cat.anchor.x = 0.5; //旋转圆心
+//				cat.anchor.y = 0.5; //旋转圆心
+//              cat.anchor.set(x, y)//旋转圆心
+//				cat.pivot.set(32, 32)//旋转具体坐标
+				
+				
+				
+				
+				app.stage.addChild(cat);
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/alert.css"/>
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/alert.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/global-tool.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/global-variable.js"></script>
+    <style>
+        .main {
+            position: relative;
+            display: flex;
+            height: 100%;
+            background: url("img/bg.png") no-repeat fixed center;
+        }
+
+        .main form {
+            position: absolute;
+            top: 245px;
+            left: 220px;
+        }
+
+        .main form p {
+            margin: 0;
+            color: #4c5365;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .main form p:first-child {
+            color: #fff;
+            font-size: 36px;
+        }
+
+        .main form label:last-child {
+            margin-top: 64px;
+        }
+
+
+        .main label {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .main input,
+        .main #btn {
+            width: 300px;
+            height: 44px;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            border-radius: 24px;
+        }
+
+        .main input {
+            text-indent: 28px;
+        }
+
+        .main #btn {
+            cursor: pointer;
+            color: #fff;
+            background-image: -webkit-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -moz-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -o-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -ms-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: linear-gradient(left, #4771d1, #3ccacc);
+        }
+
+        .main .ttimg {
+            position: absolute;
+            width: 110px;
+            height: 40px;
+            top: 4px;
+            left: 170px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <form action="">
+            <p>心电图数据分析软件</p>
+            <p>ECG DATA ANALYSIS SOFTWARE</p>
+            <label>
+                <input type="text" id="mobile" placeholder="请输入账号" maxlength="11">
+            </label>
+            <label>
+                <input type="password" id="password" placeholder="请输入密码">
+            </label>
+            <label>
+                <input type="text" id="text" placeholder="请输入验证码">
+                <img class="ttimg" alt="">
+            </label>
+            <label>
+                <button type="button" id="btn">登录</button>
+            </label>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            $('.ttimg').attr('src', g_domain + "/dws/code/get");
+
+            $('.ttimg').on('click', () => { rax(); });
+
+            $('#btn').on('click', login);
+
+            $('form').on('keydown', function (ev) {
+                var ev = window.event || ev;
+                if (ev.keyCode == 13) {
+                    login();
+                }
+            });
+			var flag = true;
+			
+            function login() {
+            	if(flag){
+            		
+            		let id = $('#mobile').val(),
+                    password = $('#password').val(),
+                    text = $('#text').val(),
+                    url = g_domain + "/dws/code/login";
+
+	                if (id == "" || undefined) {
+	                	alertx('请输入用户名')
+	                    return;
+	                }
+	                if (password == "" || undefined) {
+	                	alertx('请输入密码')
+	                    return;
+	                }
+	                if (text == "" || undefined) {
+	                	alertx('请输入验证码')
+	                    return;
+	                }
+					
+					flag =false;
+					
+	                $.ajax({
+	                    method: 'post',
+	                    type: "json",
+	                    url: url,
+	                    xhrFields: {
+	                        withCredentials: true
+	                    },
+	                    data: {
+	                        "mobile": id,
+	                        "password": password,
+	                        "code": text
+	                    },
+	                    success: (data) => {
+	                    	flag =true;
+	                        let dataX = JSON.parse(data);
+	                          //alert(JSON.stringify('155: ' + data))
+	//                        console.log(data)
+	                        if (dataX.code == 000) {
+	                            setLocalInfo("dws_doctorId", dataX.data);
+	                            setLocalInfo("dws_token", dataX.token);
+	                            // todo svn上传前更改
+	//                            location.href = "http://api-test.995120.cn/reg1/";
+	                            location.href = g_domain_ui;
+	                        } else {
+	                            if (dataX.code == 001) {
+	//                              alert('164: ' + dataX.message);
+									alertx('用户名密码或验证码错误')
+	                            }
+	                            rax();
+	                        }
+	                    },
+	                    error: (err) => {
+	                    	flag =true;
+	                        console.log(err);
+	                    }
+	                })
+	            }
+                
+            }
+
+            function setLocalInfo(k, v) {
+                localStorage.setItem(k, v);
+                var a = localStorage.getItem('dws_token')
+                //alert('178: ' + a)
+            }
+
+            function rax() {
+                let ra = Math.floor(Math.random() * 10000);
+                $('.ttimg').attr('src', g_domain + "/dws/code/get?" + ra);
+                return;
+            }
+        });
+    </script>
+</body>
+
+</html>

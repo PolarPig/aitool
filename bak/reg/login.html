@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <link rel="stylesheet" href="./normalize.css">
+    <script src="./jquery-2.2.3.min.js"></script>
+    <style>
+        form p {
+            margin: 0;
+            color: #4c5365;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        form p:first-child {
+            color: #fff;
+            font-size: 36px;
+        }
+
+        form label:last-child {
+            margin-top: 64px;
+        }
+
+        .main {
+            display: flex;
+            height: 100%;
+            padding-top: 245px;
+            padding-left: 220px;
+            background: url("./img/bg.png") no-repeat fixed center;
+        }
+
+        .main label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .main input,
+        .main #btn {
+            width: 300px;
+            height: 44px;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            border-radius: 24px;
+        }
+
+        .main input {
+            text-indent: 28px;
+        }
+
+        .main #btn {
+            color: #fff;
+            background-image: -webkit-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -moz-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -o-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: -ms-linear-gradient(left, #4771d1, #3ccacc);
+            background-image: linear-gradient(left, #4771d1, #3ccacc);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <form action="">
+            <p>单导心电人工智能辅助分析软件</p>
+            <p>ECG DATA ANALYSIS SOFTWARE</p>
+            <label>
+                <input type="text" id="mobile" placeholder="请输入账号">
+            </label>
+            <label>
+                <input type="password" id="password" placeholder="请输入密码">
+            </label>
+            <label>
+                <input type="text" id="text" placeholder="请输入验证码">
+            </label>
+            <label>
+                <button type="button" id="btn">登录</button>
+            </label>
+        </form>
+    </div>
+
+    <script>
+        $(function () {
+
+            $('#btn').on('click', function () {
+
+                let id = $('#mobile').val();
+                let password = $('#password').val();
+
+                let data = {
+                    "reqHead": {
+                        "functionId": "DWS001001001",
+                    },
+                    "body": {
+                        "mobile": id,
+                        "password": password
+                    }
+                };
+
+                let dataX = JSON.stringify(data);
+                console.log(dataX);
+
+                $.ajax({
+                    type: "post",
+                    url: "http://api-test.995120.cn/dws/",
+                    // url: "http://192.168.1.66:2160/dws/",
+                    dataType: "json",
+                    data: dataX,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.body.data != "" || undefined) {
+                            console.log(data);
+                            alert(data.respHead.respMsg);
+                            location.href = 'index.html';
+                        } else {
+                            alert(data.respHead.respMsg);
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        console.log('连接失败');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

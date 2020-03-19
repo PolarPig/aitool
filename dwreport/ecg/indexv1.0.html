@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+                <title>实时心电图</title>
+        </head>
+        <body>
+                <div style="position: relative;">
+                        <canvas id="lowgird" width="375" height="110" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg" width="375" height="110" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird2" width="375" height="110" style="position: absolute; left: 0; top: 111px; z-index: 0;"></canvas>
+                        <canvas id="ecg2" width="375" height="110" style="position: absolute; left: 0; top: 111px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird3" width="375" height="110" style="position: absolute; left: 0; top: 222px; z-index: 0;"></canvas>
+                        <canvas id="ecg3" width="375" height="110" style="position: absolute; left: 0; top: 222px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird4" width="375" height="110" style="position: absolute; left: 0; top: 333px; z-index: 0;"></canvas>
+                        <canvas id="ecg4" width="375" height="110" style="position: absolute; left: 0; top: 333px; z-index: 1;"></canvas>
+
+
+                        <canvas id="lowgird1" width="375" height="110" style="position: absolute; left: 0; top: 444px; z-index: 0;"></canvas>
+                        <canvas id="ecg1" width="375" height="110" style="position: absolute; left: 0; top: 444px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird21" width="375" height="110" style="position: absolute; left: 0; top: 555px; z-index: 0;"></canvas>
+                        <canvas id="ecg21" width="375" height="110" style="position: absolute; left: 0; top: 555px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird31" width="375" height="110" style="position: absolute; left: 0; top: 666px; z-index: 0;"></canvas>
+                        <canvas id="ecg31" width="375" height="110" style="position: absolute; left: 0; top: 666px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird41" width="375" height="110" style="position: absolute; left: 0; top: 777px; z-index: 0;"></canvas>
+                        <canvas id="ecg41" width="375" height="110" style="position: absolute; left: 0; top: 777px; z-index: 1;"></canvas>
+                        
+                        
+                        
+                        <canvas id="lowgird5" width="375" height="110" style="position: absolute; left: 376px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg5" width="375" height="110" style="position: absolute;  left: 376px;  top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird6" width="375" height="110" style="position: absolute;  left: 376px;  top: 111px; z-index: 0;"></canvas>
+                        <canvas id="ecg6" width="375" height="110" style="position: absolute;  left: 376px;  top: 111px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird7" width="375" height="110" style="position: absolute;  left: 376px;  top: 222px; z-index: 0;"></canvas>
+                        <canvas id="ecg7" width="375" height="110" style="position: absolute;  left: 376px;  top: 222px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird8" width="375" height="110" style="position: absolute;  left: 376px;  top: 333px; z-index: 0;"></canvas>
+                        <canvas id="ecg8" width="375" height="110" style="position: absolute;  left: 376px;  top: 333px; z-index: 1;"></canvas>
+
+
+                        <canvas id="lowgird51" width="375" height="110" style="position: absolute; left: 376px; top: 444px; z-index: 0;"></canvas>
+                        <canvas id="ecg51" width="375" height="110" style="position: absolute;  left: 376px;  top: 444px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird61" width="375" height="110" style="position: absolute;  left: 376px;  top: 555px; z-index: 0;"></canvas>
+                        <canvas id="ecg61" width="375" height="110" style="position: absolute;  left: 376px;  top: 555px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird71" width="375" height="110" style="position: absolute;  left: 376px;  top: 666px; z-index: 0;"></canvas>
+                        <canvas id="ecg71" width="375" height="110" style="position: absolute;  left: 376px;  top: 666px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird81" width="375" height="110" style="position: absolute;  left: 376px;  top: 777px; z-index: 0;"></canvas>
+                        <canvas id="ecg81" width="375" height="110" style="position: absolute;  left: 376px;  top: 777px; z-index: 1;"></canvas>
+                        
+                        
+
+                        <canvas id="lowgird9" width="375" height="110" style="position: absolute; left: 752px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg9" width="375" height="110" style="position: absolute;  left: 752px;  top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird10" width="375" height="110" style="position: absolute;  left: 752px;  top: 111px; z-index: 0;"></canvas>
+                        <canvas id="ecg10" width="375" height="110" style="position: absolute;  left: 752px;  top: 111px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird11" width="375" height="110" style="position: absolute;  left: 752px;  top: 222px; z-index: 0;"></canvas>
+                        <canvas id="ecg11" width="375" height="110" style="position: absolute;  left: 752px;  top: 222px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird12" width="375" height="110" style="position: absolute;  left: 752px;  top: 333px; z-index: 0;"></canvas>
+                        <canvas id="ecg12" width="375" height="110" style="position: absolute;  left: 752px;  top: 333px; z-index: 1;"></canvas>
+
+
+                        <canvas id="lowgird91" width="375" height="110" style="position: absolute; left: 752px; top: 444px; z-index: 0;"></canvas>
+                        <canvas id="ecg91" width="375" height="110" style="position: absolute;  left: 752px;  top: 444px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird101" width="375" height="110" style="position: absolute;  left: 752px;  top: 555px; z-index: 0;"></canvas>
+                        <canvas id="ecg101" width="375" height="110" style="position: absolute;  left: 752px;  top: 555px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird111" width="375" height="110" style="position: absolute;  left: 752px;  top: 666px; z-index: 0;"></canvas>
+                        <canvas id="ecg111" width="375" height="110" style="position: absolute;  left: 752px;  top: 666px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird121" width="375" height="110" style="position: absolute;  left: 752px;  top: 777px; z-index: 0;"></canvas>
+                        <canvas id="ecg121" width="375" height="110" style="position: absolute;  left: 752px;  top: 777px; z-index: 1;"></canvas>
+
+
+
+                        <canvas id="lowgird13" width="375" height="110" style="position: absolute; left: 1128px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg13" width="375" height="110" style="position: absolute;  left: 1128px;  top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird14" width="375" height="110" style="position: absolute;  left: 1128px;  top: 111px; z-index: 0;"></canvas>
+                        <canvas id="ecg14" width="375" height="110" style="position: absolute;  left: 1128px;  top: 111px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird15" width="375" height="110" style="position: absolute;  left: 1128px;  top: 222px; z-index: 0;"></canvas>
+                        <canvas id="ecg15" width="375" height="110" style="position: absolute;  left: 1128px;  top: 222px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird16" width="375" height="110" style="position: absolute;  left: 1128px;  top: 333px; z-index: 0;"></canvas>
+                        <canvas id="ecg16" width="375" height="110" style="position: absolute;  left: 1128px;  top: 333px; z-index: 1;"></canvas>
+
+
+                        <canvas id="lowgird131" width="375" height="110" style="position: absolute; left: 1128px; top: 444px; z-index: 0;"></canvas>
+                        <canvas id="ecg131" width="375" height="110" style="position: absolute;  left: 1128px;  top: 444px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird141" width="375" height="110" style="position: absolute;  left: 1128px;  top: 555px; z-index: 0;"></canvas>
+                        <canvas id="ecg141" width="375" height="110" style="position: absolute;  left: 1128px;  top: 555px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird151" width="375" height="110" style="position: absolute;  left: 1128px;  top: 666px; z-index: 0;"></canvas>
+                        <canvas id="ecg151" width="375" height="110" style="position: absolute;  left: 1128px;  top: 666px; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird161" width="375" height="110" style="position: absolute;  left: 1128px;  top: 777px; z-index: 0;"></canvas>
+                        <canvas id="ecg161" width="375" height="110" style="position: absolute;  left: 1128px;  top: 777px; z-index: 1;"></canvas>
+
+
+
+
+
+                        <p id="timetext" style="position: absolute; left: 0; top: 888px; z-index: 0;">250采样率、750个点 一行跑完标准3秒</p>
+                        <p id="timep" style="position: absolute; left: 0; top: 920px; z-index: 1;">0秒</p>
+
+                </div>
+
+                <script src="js/tool.js" type="text/javascript" charset="utf-8"></script>
+                <script src="js/ecgdata.js" type="text/javascript" charset="utf-8"></script>
+                <script type="text/javascript" src="js/realtimeecg3.js" ></script>
+                <script type="text/javascript">
+                        // 低格图层    心电波层
+                        ecgdraw(document.getElementById("lowgird"),document.getElementById("ecg"))
+                        ecgdraw(document.getElementById("lowgird2"),document.getElementById("ecg2"))
+                        ecgdraw(document.getElementById("lowgird3"),document.getElementById("ecg3"))
+                        ecgdraw(document.getElementById("lowgird4"),document.getElementById("ecg4"))
+                        
+                        ecgdraw(document.getElementById("lowgird1"),document.getElementById("ecg1"))
+                        ecgdraw(document.getElementById("lowgird21"),document.getElementById("ecg21"))
+                        ecgdraw(document.getElementById("lowgird31"),document.getElementById("ecg31"))
+                        ecgdraw(document.getElementById("lowgird41"),document.getElementById("ecg41"))
+                        
+                        ecgdraw(document.getElementById("lowgird5"),document.getElementById("ecg5"))
+                        ecgdraw(document.getElementById("lowgird6"),document.getElementById("ecg6"))
+                        ecgdraw(document.getElementById("lowgird7"),document.getElementById("ecg7"))
+                        ecgdraw(document.getElementById("lowgird8"),document.getElementById("ecg8"))
+                        
+                        ecgdraw(document.getElementById("lowgird51"),document.getElementById("ecg51"))
+                        ecgdraw(document.getElementById("lowgird61"),document.getElementById("ecg61"))
+                        ecgdraw(document.getElementById("lowgird71"),document.getElementById("ecg71"))
+                        ecgdraw(document.getElementById("lowgird81"),document.getElementById("ecg81"))
+                        
+                        ecgdraw(document.getElementById("lowgird9"),document.getElementById("ecg9"))
+                        ecgdraw(document.getElementById("lowgird10"),document.getElementById("ecg10"))
+                        ecgdraw(document.getElementById("lowgird11"),document.getElementById("ecg11"))
+                        ecgdraw(document.getElementById("lowgird12"),document.getElementById("ecg12"))
+                        
+                        ecgdraw(document.getElementById("lowgird91"),document.getElementById("ecg91"))
+                        ecgdraw(document.getElementById("lowgird101"),document.getElementById("ecg101"))
+                        ecgdraw(document.getElementById("lowgird111"),document.getElementById("ecg111"))
+                        ecgdraw(document.getElementById("lowgird121"),document.getElementById("ecg121"))
+                        
+                        ecgdraw(document.getElementById("lowgird13"),document.getElementById("ecg13"))
+                        ecgdraw(document.getElementById("lowgird14"),document.getElementById("ecg14"))
+                        ecgdraw(document.getElementById("lowgird15"),document.getElementById("ecg15"))
+                        ecgdraw(document.getElementById("lowgird16"),document.getElementById("ecg16"))
+
+                        ecgdraw(document.getElementById("lowgird131"),document.getElementById("ecg131"))
+                        ecgdraw(document.getElementById("lowgird141"),document.getElementById("ecg141"))
+                        ecgdraw(document.getElementById("lowgird151"),document.getElementById("ecg151"))
+                        ecgdraw(document.getElementById("lowgird161"),document.getElementById("ecg161"))
+
+                </script>
+
+        </body>
+</html>

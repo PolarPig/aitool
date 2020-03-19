@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./jquery-2.2.3.min.js"></script>
+</head>
+<style type="text/css">
+    #spinners {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+
+    #preloader {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background: #3498db;
+        border-radius: 50px;
+        -webkit-animation: preloader 1.5s infinite linear;
+        -moz-animation: preloader 1.5s infinite linear;
+        -ms-animation: preloader 1.5s infinite linear;
+        animation: preloader 1.5s infinite linear;
+    }
+
+    #preloader:after {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-top: 10px solid #9b59b6;
+        border-bottom: 10px solid #9b59b6;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-radius: 50px;
+        content: '';
+        top: -20px;
+        left: -20px;
+        -webkit-animation: preloader_after 1.5s infinite linear;
+        -moz-animation: preloader_after 1.5s infinite linear;
+        -ms-animation: preloader_after 1.5s infinite linear;
+        animation: preloader_after 1.5s infinite linear;
+    }
+
+
+    @-webkit-keyframes preloader {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        50% {
+            -webkit-transform: rotate(180deg);
+            background: #2ecc71;
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes preloader_after {
+        0% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+
+        50% {
+            border-top: 10px solid #3498db;
+            border-bottom: 10px solid #3498db;
+        }
+
+        100% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+    }
+
+
+    @-moz-keyframes preloader {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+
+        50% {
+            -moz-transform: rotate(180deg);
+            background: #2ecc71;
+        }
+
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes preloader_after {
+        0% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+
+        50% {
+            border-top: 10px solid #3498db;
+            border-bottom: 10px solid #3498db;
+        }
+
+        100% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+    }
+
+    @-ms-keyframes preloader {
+        0% {
+            -ms-transform: rotate(0deg);
+        }
+
+        50% {
+            -ms-transform: rotate(180deg);
+            background: #2ecc71;
+        }
+
+        100% {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes preloader_after {
+        0% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+
+        50% {
+            border-top: 10px solid #3498db;
+            border-bottom: 10px solid #3498db;
+        }
+
+        100% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+    }
+
+    @keyframes preloader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+            background: #2ecc71;
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes preloader_after {
+        0% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+
+        50% {
+            border-top: 10px solid #3498db;
+            border-bottom: 10px solid #3498db;
+        }
+
+        100% {
+            border-top: 10px solid #9b59b6;
+            border-bottom: 10px solid #9b59b6;
+        }
+    }
+
+    #m {
+        position: absolute;
+        background: #333;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        display: none;
+        opacity: .6;
+    }
+</style>
+
+<body>
+    <button type="button" class="btn">按钮</button>
+    <button type="button" class="btn2">按钮2</button>
+
+    <div id="m">
+        <div id="spinners">
+            <div id="preloader"></div>
+        </div>
+    </div>
+
+    <div>
+        <textarea name="myTxtArea" id="cxk" cols="30" rows="10"></textarea>
+    </div>
+
+    <script type="text/javascript">
+
+
+
+        let btn = document.querySelector('.btn');
+        let m = document.querySelector('#m');
+        btn.addEventListener('click', function () {
+            m.style.display = 'block';
+            setTimeout(() => {
+                m.style.display = 'none';
+            }, 3000);
+            // for (let index = 0; index < 6; index++) {
+            //     console.log(index);
+            // }
+        });
+
+
+        function printx() {
+            let x = window.open('./login.html', 'newwindow', 'height=300, width=700, top=100, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
+
+            setTimeout(() => {
+                x.print();
+            }, 18);
+        }
+
+        $('.btn2').on('click', function () {
+            printx();
+        });
+    </script>
+</body>
+
+</html>

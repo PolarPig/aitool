@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>矢量图</title>
+	</head>
+
+	<body>
+		<script type="text/javascript" src="pixi.min.js"></script>
+		<script type="text/javascript" src="ecgdata.js" ></script>
+		<script type="text/javascript" src="dealdata.js" ></script>
+		<script type="text/javascript">
+			
+			window.requestAnimFrame = (function() {
+			  return (
+			    window.requestAnimationFrame ||
+			    window.webkitRequestAnimationFrame ||
+			    window.mozRequestAnimationFrame ||
+			    window.oRequestAnimationFrame ||
+			    window.msRequestAnimationFrame ||
+			    function(callback, element) {
+			      window.setTimeout(callback, 1000 / 60)
+			    }
+			  )
+			})()
+
+			// 8条线，做8个画笔，8个虚拟画笔
+			var DRAWECG =[]			// idx 1
+			var DRAWECGV1 = []		// idx 2
+			var DRAWECGV2 = []		// idx 3
+			var DRAWECGV3 = []		// idx 4
+			var DRAWBREATHE = []	// idx 5
+			var DRAWBLOOD = []		// idx 6
+			var DRAWBLOODV1 = []	// idx 7
+			var DRAWBLOODV2 = []	// idx 8
+
+			//			var Container = PIXI.Container,
+			//				   autoDetectRenderer = PIXI.autoDetectRenderer,
+			//				   loader = PIXI.loader,
+			//				   resources = PIXI.loader.resources,
+			//				   TextureCache = PIXI.utils.TextureCache,
+			//				   Texture = PIXI.Texture,
+			//				   Sprite = PIXI.Sprite;
+			
+
+			var type = "WebGL"
+			if(!PIXI.utils.isWebGLSupported()) {
+				type = "canvas"
+			}
+			PIXI.utils.sayHello(type)
+
+			var app = new PIXI.Application({
+				width: 1130,
+				height: 2200
+			});
+			renderer = PIXI.autoDetectRenderer(1130,2200);
+			document.body.appendChild(app.view);
+
+			var line = new PIXI.Graphics();
+			app.stage.addChild(line)
+			app.line = line
+			drawgrid(app)
+			//testline(app)
+			
+			var obj = {
+				ecgdata:datas,
+				i:0,
+				idx:1,
+				speed:4,
+				off_w:0,
+				off_h:0
+			}
+			
+			_realData(obj)
+			
+			
+			
+			var lineecg = new PIXI.Graphics();
+			lineecg.lineStyle(1, 0x32FF32, 1);
+			var img = new PIXI.Sprite(lineecg.generateTexture());
+			app.stage.addChild(img)
+			
+			var obj ={
+				dataarr:[],
+				line:lineecg
+			}
+			
+			DRAWECG[0] = obj
+			
+			update()
+			
+			function update(){
+				
+				drawToMem(app)
+				requestAnimFrame(update);
+			}
+			
+			
+			function drawgrid(app){
+				var width = 1130
+				var height = 2200
+				var line = app.line;
+				line.lineStyle(1, 0x303641, 1);
+				
+				line.moveTo(0, 0);
+				line.lineTo(0.5, height);
+				line.moveTo(0.5, height);
+				line.lineTo(width, height);
+				line.moveTo(width, height);
+				line.lineTo(width, 0.5);
+				line.moveTo(width, 0.5);
+				line.lineTo(0.5, 0.5);
+				
+				for(var i = 19; i < (width); i = i + 19) {
+					line.moveTo(0.5, i - 0.5);
+					line.lineTo(width, i - 0.5);
+				}
+		
+				for(var i = 19; i < (height); i = i + 19) {
+					line.moveTo(i - 0.5, 0.5);
+					line.lineTo(i - 0.5, width);
+				}
+					
+				
+				renderer.render(app.stage);
+			}
+			
+			
+
+			function testline(app) {
+				var line = app.line
+				line.lineStyle(1, 0x1FF100, 1);
+				line.moveTo(0, 0);
+				line.lineTo(80, 50);
+				line.lineTo(40, 90);
+				line.lineTo(0, 0);
+				line.x = 32;
+				line.y = 32;
+				
+				renderer.render(app.stage);
+
+			}
+		</script>
+	</body>
+
+</html>

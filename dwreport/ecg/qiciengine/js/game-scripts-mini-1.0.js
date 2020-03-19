@@ -1,0 +1,1 @@
+(function(e,t,n){var r=qc.defineBehaviour("qc.engine.UI",qc.Behaviour,function(){this.runInEditor=!0},{});r.prototype.awake=function(){var e=this.gameObject;e.beginFill(16724736),e.lineStyle(10,16767232,1),e.lineTo(250,50),e.lineTo(100,100),e.lineTo(250,220),e.lineTo(50,220),e.lineTo(50,50),e.endFill()}}).call(this,this,Object)

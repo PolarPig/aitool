@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>心电图数据分析软件</title>
+    <script type="text/javascript" src="js/global-variable.js"></script>
+    <script type="text/javascript">
+        (function () {
+            let token = localStorage.getItem('dws_token')
+            let doctorId = localStorage.getItem('dws_doctorId')
+            let localUrl = window.location.href
+            if (doctorId == null || doctorId == undefined) {
+                //alert("登陆失败");
+                if (localUrl.split("?").length > 1) {
+                    window.location.href = g_admin_ui
+                    return
+                } else {
+                    window.location.href = g_domain_ui + "login.html"
+                    return
+                }
+                return
+            }
+            if (token == null || token == undefined) {
+                //alert("登陆失败");
+                if (localUrl.split("?").length > 1) {
+                    window.location.href = g_admin_ui
+                    return
+                } else {
+                    window.location.href = g_domain_ui + "login.html"
+                    return
+                }
+                return
+            }
+        }())
+    </script>
+    <style>
+        @media print {
+
+            html,
+            body {
+                width: 210mm;
+                height: 297mm;
+            }
+
+            .page {
+                font-size: 10pt;
+                width: initial;
+            }
+
+            .page .part2 td {
+                height: 1cm;
+            }
+
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+        }
+    </style>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/alert.css" />
+</head>
+
+<body>
+
+    <!-- 头部 -->
+    <div class="e ecg_nav_header">
+        <header class="ecg_box_header">
+            <div class="head-item">
+                <div class="log-box">
+                    <img src="./img/logo_top.png" alt="">
+                </div>
+                <div class="tudan-flex tudan-two-lines">
+                    <span class="rowing">心电图数据分析软件</span>
+                    <span>ECG DATA ANALYSIS SOFTWARE</span>
+                </div>
+            </div>
+            <div class="head-item">
+                <div>
+                    <img class="user_avatar" src="./img/img_default_avatar.png" alt="">
+                </div>
+                <div class="user_name">欢迎您，<span class="doctorName">admin</span></div>
+                <div class="inco_set tudan-flex tudan-xjz tudan-yjz">
+                    <img src="./img/icon_top_set.png" alt="">
+                </div>
+                <div class="inco_exit tudan-flex tudan-xjz tudan-yjz">
+                    <img src="./img/icon_top_close.png" alt="">
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="e ecg_box">
+        <!-- 主体内容 -->
+        <section class="ecg_content tudan-flex">
+            <!-- 左侧 -->
+            <div class="l_content">
+                <div class="btn-group mgb-18">
+                    <button id="open" type="button">打开数据</button>
+                    <button style="display: none;" id="go_back" onclick="go_backs()" type="button">返回医生工作站</button>
+                    <form>
+                        <input id="upload" type="file" name="file" accept=".ecg,.hecg" hidden>
+                    </form>
+                </div>
+                <div class="c-title">用户信息</div>
+                <div class="message-forbid"></div>
+                <div class="user_info">
+                    <div id="u_name"><span>姓名：</span><input id='sub_name' maxlength="21"
+                            class="sub_userinfo stop_event input_hot_key" onblur="submitUser()" type="text"></div>
+                    <div id="u_sex"><span>性别：</span><select id='sub_sex' class="sub_userinfo stop_event input_hot_key"
+                            onchange="submitUser()" type="text">
+                            <option value="0" selected>男</option>
+                            <option value="1">女</option>
+                            <option value="2">未指定</option>
+                        </select></div>
+                    <div id="u_age"><span>年龄：</span><input id='sub_age' maxlength="3"
+                            class="sub_userinfo stop_event input_hot_key" onblur="submitUser()" type="text"></div>
+                    <div id="u_height"><span>身高：</span><input id='sub_height' maxlength="3"
+                            class="sub_userinfo stop_event input_hot_key" onblur="submitUser()" type="text"></div>
+                    <div id="u_weight"><span>体重：</span><input id='sub_weight' maxlength="3"
+                            class="sub_userinfo stop_event input_hot_key" onblur="submitUser()" type="text"></div>
+                    <div id="u_tel"><span>电话：</span><input id='sub_emergencyTelephone' maxlength="15"
+                            class="sub_userinfo stop_event input_hot_key" onblur="submitUser()" type="text"></div>
+                    <div id="u_length">数据长度：</div>
+                </div>
+                <div class="btn-box">
+                    <img class="param-btn" src="img/btn_off.png" />
+                    <img class="situa-btn" src="img/icon_qj_nor.png" />
+                </div>
+                <div class="c-title">操作菜单</div>
+                <div class="icon_preview btns-group tudan-flex tudan-yjz tudan-xjz mgb-18 stop_event">
+                    <i>
+                        <img src="./img/icon_preview.png" alt="">
+                    </i>
+                    <span>报告预览</span>
+                </div>
+                <div class="icon_upload btns-group tudan-flex tudan-yjz tudan-xjz mgb-18 stop_event">
+                    <i>
+                        <img src="./img/icon_upload.png" alt="">
+                    </i>
+                    <span>上传报告</span>
+                </div>
+                <div class="icon_export btns-group tudan-flex tudan-yjz tudan-xjz mgb-18 stop_event">
+                    <i>
+                        <img src="./img/icon_export.png" alt="">
+                    </i>
+                    <span>导出报告</span>
+                </div>
+                <div class="icon_print btns-group tudan-flex tudan-yjz tudan-xjz mgb-18 stop_event">
+                    <i>
+                        <img src="./img/icon_print.png" alt="">
+                    </i>
+                    <span>打印报告</span>
+                </div>
+                <div class="version_box">
+                	<div class="c-filename" id="fileName">--</div>
+                    <div class="c-title">发布版本 V1.0</div>
+                    <div class="c-title">完整版本 V1.0.0.3</div>
+                </div>
+            </div>
+            <!-- 正文 -->
+            <div class="c_content" id="canvasDiv">
+                <div class="forbid">
+
+                </div>
+                <div class="navs tudan-flex">
+                    <div class="item n tip stop_event" onclick="chanceType(1)" title="窦性心率(N)">
+                        <span style="color: #fff">N</span>
+                    </div>
+                    <div class="item s tip stop_event" onclick="chanceType(8)" title="房性早搏(S)">
+                        <span style="color: #fefe06">S</span>
+                    </div>
+                    <div class="item Ctrl_s tip stop_event" onclick="chanceType(34)" title="房性逸搏(Ctrl+S)">
+                        <span style="color: #804000">SE</span>
+                    </div>
+                    <div class="item v tip stop_event" onclick="chanceType(5)" title="室早、R-on-T(V)">
+                        <span style="color: #fa03fa">V</span>
+                    </div>
+                    <div class="item Ctrl_v tip stop_event" onclick="chanceType(10)" title="室性逸搏(Ctrl+V)">
+                        <span style="color: #fe0000">VE</span>
+                    </div>
+                    <div class="item j tip stop_event" onclick="chanceType(7)" title="交界性早搏(J)">
+                        <span style="color: #9acd32">J</span>
+                    </div>
+                    <div class="item Ctrl_j tip stop_event" onclick="chanceType(11)" title="交界性逸搏(Ctrl+J)">
+                        <span style="color: #408080">JE</span>
+                    </div>
+                    <div class="item f tip stop_event" onclick="chanceType(43)" title="房颤(F)">
+                        <span style="color: #FF4500">Af</span>
+                    </div>
+                    <div class="item Ctrl_f tip stop_event" onclick="chanceType(42)" title="房扑(Ctrl+F)">
+                        <span style="color: #FF8C00">AF</span>
+                    </div>
+                    <div class="item c tip stop_event" onclick="chanceType(44)" title="房颤伴心室内差异传导(C)">
+                        <span style="color: #047efd">C</span>
+                    </div>
+                    <div class="item x tip stop_event" onclick="chanceType(13)" title="伪差(X)">
+                        <span style="color: #313332">X</span>
+                    </div>
+                    <div class="item p tip stop_event" onclick="chanceType(51)" title="心室起搏(P)">
+                        <span style="color: #03006e">P</span>
+                    </div>
+                    <div class="item a tip stop_event" onclick="chanceType(50)" title="心房起搏(A)">
+                        <span style="color: #fd6804">A</span>
+                    </div>
+                    <div class="item d tip stop_event" onclick="chanceType(52)" title="房室顺序起搏(D)">
+                        <span style="color: #6e003c">D</span>
+                    </div>
+                    <div class="item normal stop_event" id="lowgird">
+                        <span>底格</span>
+                    </div>
+                    <div class="item normal stop_event" id="lowpos">
+                        <span>定位</span>
+                    </div>
+                    <div class="item normal stop_event" id="scale">
+                        <span>标尺</span>
+                    </div>
+                    <div class="item large stop_event">
+                        <span id="gain">增益程度 10</span>
+                        <span>
+                            <svg t="1556241363604" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="3645"
+                                width="16" height="16">
+                                <path d="M862.752 326.016H161.248l349.696 371.936L862.72 326.016z" p-id="3646"
+                                    fill="#bfbfbf"></path>
+                            </svg>
+                        </span>
+                        <ul>
+                            <li><span id="gain5">5mm/mV</span></li>
+                            <li><span id="gain10">10mm/mV</span></li>
+                            <li><span id="gain20">20mm/mV</span></li>
+                            <li><span id="gain40">40mm/mV</span></li>
+                        </ul>
+                    </div>
+                    <div class="item large stop_event">
+                        <span id="paper">走纸速度 25</span>
+                        <span>
+                            <svg t="1556241363604" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="3645"
+                                width="16" height="16">
+                                <path d="M862.752 326.016H161.248l349.696 371.936L862.72 326.016z" p-id="3646"
+                                    fill="#bfbfbf"></path>
+                            </svg>
+                        </span>
+                        <ul>
+                            <li><span id="paperDouble">12.5mm/s</span></li>
+                            <li><span id="paperDefault">25mm/s</span></li>
+                            <li><span id="paperHalf">50mm/s</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="main_top" id="maindiv">
+                    <canvas id="bgcanvas" width="990" height="451"></canvas>
+                    <canvas id="scalecanvas" width="990" height="451"></canvas>
+                    <canvas id="drawcanvas" width="990" height="451"></canvas>
+                </div>
+
+                <div class="main_middle tudan-flex">
+                    <div>
+                        <canvas id="navcanvas" width="490" height="80"></canvas>
+                    </div>
+                    <div>
+                        <canvas id="chartcanvas" width="490" height="80"></canvas>
+                    </div>
+                </div>
+
+                <div class="main_bottom tudan-flex">
+                    <div>
+                        <p><span class="ecg_impression_title">心电图印象</span></p>
+                        <div class="ecg_impression_body">
+                        </div>
+                    </div>
+                    <div>
+                        <p>
+                            <span class="ecg_result_title">心电图结论</span>
+                            <select id="insert" class=""></select>
+                        </p>
+                        <textarea class="ecg_result_body stop_event"></textarea>
+                    </div>
+                </div>
+                <p style="color: #7f8495;font-size: 14px;text-align: center;" id="curselect"></p>
+
+                <div id="rulerDiv" class="ruler">
+                    <div class="rulerVertical"></div>
+                    <div class="rulerHorizontal"></div>
+                </div>
+            </div>
+            <!-- id="re_pre" -->
+            <div class="reportBox" id="reportBox" style="display: none;">
+
+            </div>
+            <!-- 右侧 -->
+            <div class="r_content">
+                <div class="r_title">基本参数</div>
+                <div class="zhibiao_title tudan-flex">
+                    <span>测量指标</span>
+                    <span>测量值</span>
+                    <span>参考范围</span>
+                </div>
+                <div class="zhibiao_box">
+                    <div class="item">
+                        <span>心率</span>
+                        <span id="heartH">--</span>
+                        <span>60~100bpm</span>
+                    </div>
+                    <div class="item">
+                        <span>P波振幅</span>
+                        <span id="pH">--</span>
+                        <span>0.05~0.25mV</span>
+                    </div>
+                    <div class="item">
+                        <span>P波时限</span>
+                        <span id="pS">--</span>
+                        <span>60~110ms</span>
+                    </div>
+                    <!--<div class="item">
+                        <span>P波方向</span>
+                        <span id="pF">--</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>P波形态</span>
+                        <span id="pY">--</span>
+                        <span>单向圆钝</span>
+                    </div>-->
+                    <div class="item">
+                        <span>PR间期</span>
+                        <span id="prS">--</span>
+                        <span>120~210ms</span>
+                    </div>
+                    <!--<div class="item">
+                        <span>PR段形态</span>
+                        <span id="prY">--</span>
+                        <span>水平型</span>
+                    </div>-->
+                    <div class="item">
+                        <span>Q波振幅</span>
+                        <span id="qH">--</span>
+                        <span>0~0.5mV</span>
+                    </div>
+                    <div class="item">
+                        <span>R波振幅</span>
+                        <span id="rH">--</span>
+                        <span>≤1.5mV</span>
+                    </div>
+                    <div class="item">
+                        <span>QRS波振幅</span>
+                        <span id="qrHB">--</span>
+                        <span>≥0.5mV</span>
+                    </div>
+                    <!--
+                    <div class="item">
+                        <span>Q波时限</span>
+                        <span id="qS">--</span>
+                        <span>0~30ms</span>
+                    </div>
+                    <div class="item">
+                        <span>Q波振幅/R波振幅</span>
+                        <span id="qrHB">--</span>
+                        <span>&lt0.25</span>
+                    </div>-->
+                    <div class="item">
+                        <span>QRS波时限</span>
+                        <span id="qrsS">--</span>
+                        <span>60~110ms</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段振幅</span>
+                        <span id="sttgH">--</span>
+                        <span>0.05~0.1mV</span>
+                    </div>
+                    <!--<div class="item">
+                        <span>QRS主波方向</span>
+                        <span id="qrsF">--</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>是否有J波</span>
+                        <span id="jYn">--</span>
+                        <span>一般无</span>
+                    </div>
+                    <div class="item">
+                        <span>PJ间期</span>
+                        <span id="pjS">--</span>
+                        <span>≤260ms</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段抬高</span>
+                        <span id="sttgH">--</span>
+                        <span>&lt;0.10mV</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段压低</span>
+                        <span id="stydH">--</span>
+                        <span>&lt;0.05mV</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段时限</span>
+                        <span id="stS">--</span>
+                        <span>50~150ms</span>
+                    </div>
+                    <div class="item">
+                        <span>ST段形态</span>
+                        <span id="stY">--</span>
+                        <span>水平型</span>
+                    </div>-->
+                    <div class="item">
+                        <span>T波振幅</span>
+                        <span id="tH">--</span>
+                        <span>0.1~1.0mV</span>
+                    </div>
+                    <!--<div class="item">
+                        <span>T波振幅/R波振幅</span>
+                        <span id="trHB">--</span>
+                        <span>&gt;0.1</span>
+                    </div>
+                    <div class="item">
+                        <span>T波方向</span>
+                        <span id="tF">--</span>
+                        <span>向上</span>
+                    </div>
+                    <div class="item">
+                        <span>T波形态</span>
+                        <span id="tY">--</span>
+                        <span>单向圆钝</span>
+                    </div>-->
+                    <div class="item">
+                        <span>QT间期</span>
+                        <span id="qt">--</span>
+                        <span>320~480ms</span>
+                    </div>
+                    <!--<div class="item">
+                        <span>QTc间期</span>
+                        <span id="qtc">--</span>
+                        <span>320~480ms</span>
+                    </div>-->
+                </div>
+            </div>
+        </section>
+        <!-- <div id="re_pre">
+            <img src="" alt="">
+        </div> -->
+    </div>
+
+
+    <div class="mask set">
+        <div class="inco_set_window">
+            <div class="head">设置</div>
+            <div class="body">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <th>名称</th>
+                            <th class="abbr">简写</th>
+                            <th class="hotkey">热键</th>
+                            <th class="bgcolor">颜色</th>
+                        </tr>
+                        <tr>
+                            <td>正常(窦性心律)</td>
+                            <td class="abbr">N</td>
+                            <td class="hotkey">N</td>
+                            <td class="bgcolor n" bgcolor="#fff"></td>
+                        </tr>
+                        <tr>
+                            <td>房性早搏</td>
+                            <td class="abbr">S</td>
+                            <td class="hotkey">S</td>
+                            <td class="bgcolor s" bgcolor="#fefe06"></td>
+                        </tr>
+                        <tr>
+                            <td>房性逸搏</td>
+                            <td class="abbr">SE</td>
+                            <td class="hotkey">Ctrl + S</td>
+                            <td class="bgcolor se" bgcolor="#804000"></td>
+                        </tr>
+                        <tr>
+                            <td>室早、R-on-T</td>
+                            <td class="abbr">V</td>
+                            <td class="hotkey">V</td>
+                            <td class="bgcolor v" bgcolor="#fa03fa"></td>
+                        </tr>
+                        <tr>
+                            <td>室性逸搏</td>
+                            <td class="abbr">VE</td>
+                            <td class="hotkey">Ctrl + V</td>
+                            <td class="bgcolor ve" bgcolor="#fe0000"></td>
+                        </tr>
+                        <tr>
+                            <td>交界性早搏</td>
+                            <td class="abbr">J</td>
+                            <td class="hotkey">J</td>
+                            <td class="bgcolor j" bgcolor="#9acd32"></td>
+                        </tr>
+                        <tr>
+                            <td>交界性逸搏</td>
+                            <td class="abbr">JE</td>
+                            <td class="hotkey">Ctrl + J</td>
+                            <td class="bgcolor je" bgcolor="#408080"></td>
+                        </tr>
+                        <tr>
+                            <td>房颤</td>
+                            <td class="abbr">Af</td>
+                            <td class="hotkey">F</td>
+                            <td class="bgcolor Af" bgcolor="#FF4500"></td>
+                        </tr>
+                        <tr>
+                            <td>房扑</td>
+                            <td class="abbr">AF</td>
+                            <td class="hotkey">Ctrl + F</td>
+                            <td class="bgcolor AF" bgcolor="#FF8C00"></td>
+                        </tr>
+                        <tr>
+                            <td>房颤伴心室内差异传导</td>
+                            <td class="abbr">C</td>
+                            <td class="hotkey">C</td>
+                            <td class="bgcolor c" bgcolor="#047efd"></td>
+                        </tr>
+                        <tr>
+                            <td>伪差</td>
+                            <td class="abbr">X</td>
+                            <td class="hotkey">X</td>
+                            <td class="bgcolor x" bgcolor="#313332"></td>
+                        </tr>
+                        <tr>
+                            <td>心室起搏</td>
+                            <td class="abbr">P</td>
+                            <td class="hotkey">P</td>
+                            <td class="bgcolor p" bgcolor="#03006e"></td>
+                        </tr>
+                        <tr>
+                            <td>心房起搏</td>
+                            <td class="abbr">A</td>
+                            <td class="hotkey">A</td>
+                            <td class="bgcolor a" bgcolor="#fd6804"></td>
+                        </tr>
+                        <tr>
+                            <td>房室顺序起搏</td>
+                            <td class="abbr">D</td>
+                            <td class="hotkey">D</td>
+                            <td class="bgcolor d" bgcolor="#6e003c"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="foot">
+                <span class="left_span">底格线亮度调整
+                    <select id="brightness">
+                        <option value="1">10%</option>
+                        <option value="3">30%</option>
+                        <option value="6">60%</option>
+                        <option value="9">90%</option>
+                    </select>
+                </span>
+                <span>
+                    <button type="button" class="btn confirm">确定</button>
+                    <button type="button" class="btn cancel">取消</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="mask qrs">
+        <div id="showqrs" class="showqrs">
+        	<div class="mask-left">
+	            <div class="head">
+	                <p>修改编辑框</p>
+	            </div>
+	            <div class="body">
+	                <canvas id="qrs" width="800" height="441"></canvas>
+	            </div>
+	            <div class="foot">
+	                <span class="ecg-num num-size"></span>
+	                <span class="art-any">本次分析中，当前心搏的编号为<span class="ecg-num"></span></span>
+	                <span class="whether-effective">当前心搏是否有效：&nbsp;&nbsp;&nbsp;
+	                	是<span class="effective">&nbsp;√</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                	否<span class="invalid">&nbsp;√</span>
+	                </span>
+	                <span>
+	                    <button type="button" class="off-btn">确定</button>
+	                    <button type="button" class="btn confirm on-btn">确定</button>
+	                    <button type="button" class="btn cancel">取消</button>
+	                </span>
+	            </div>
+            </div>
+            <div class="mask-right">
+            	<div class="head"></div>
+	            <div class="message-body">
+	            	<div class="message-content"> 
+	            		<div class="zhibiao_title tudan-flex">
+	            			<div class="zhibiao-item">
+	            				<p>名称</p>
+	            				<p>测量指标</p>
+	            			</div>
+	            			<div class="zhibiao-item">
+	            				<p>自动测量</p>
+	            				<p>测量值</p>
+	            			</div>
+	            			<div class="zhibiao-item">
+	            				<p>人工干预测量</p>
+	            				<p>测量值</p>
+	            			</div>
+		                </div>
+		                <div class="zhibiao_box">
+		                    <div class="item">
+		                        <span class="index-name">心率(bpm)</span>
+		                        <span class="cen" id="heartHidx">--</span>
+		                        <span class="artificial" id="heartHidxOne">--</span>
+		                    </div>
+		                    <div class="item item-bg">
+		                        <span class="index-name">P波振幅(mV)</span>
+		                        <span class="cen" id="pHidx">--</span>
+		                        <span class="artificial" id="pHidxOne">--</span>
+		                    </div>
+		                    <div class="item">
+		                        <span class="index-name">P波时限(ms)</span>
+		                        <span class="cen" id="pSidx">--</span>
+		                        <span class="artificial" id="pSidxOne">--</span>
+		                    </div>
+		                    <div class="item item-bg">
+		                        <span class="index-name">PR间期(ms)</span>
+		                        <span class="cen" id="prSidx">--</span>
+		                        <span class="artificial" id="prSidxOne">--</span>
+		                    </div>
+		                    <div class="item">
+		                        <span class="index-name">Q波振幅(mV)</span>
+		                        <span class="cen" id="qHidx">--</span>
+		                        <span class="artificial" id="qHidxOne">--</span>
+		                    </div>
+		                    <div class="item item-bg">
+		                        <span class="index-name">R波振幅(mV)</span>
+		                        <span class="cen" id="rHidx">--</span>
+		                        <span class="artificial" id="rHidxOne">--</span>
+		                    </div>
+		                    <div class="item">
+		                        <span class="index-name">QRS波振幅(mV)</span>
+		                        <span class="cen" id="qrHBidx">--</span>
+		                        <span class="artificial" id="qrHBidxOne">--</span>
+		                    </div>
+		                    <div class="item item-bg">
+		                        <span class="index-name">QRS波时限(ms)</span>
+		                        <span class="cen" id="qrsSidx">--</span>
+		                        <span class="artificial" id="qrsSidxOne">--</span>
+		                    </div>
+		                    <div class="item">
+		                        <span class="index-name">ST段振幅(mV)</span>
+		                        <span class="cen" id="sttgHidx">--</span>
+		                        <span class="artificial" id="sttgHidxOne">--</span>
+		                    </div>
+		                    <div class="item item-bg">
+		                        <span class="index-name">T波振幅(mV)</span>
+		                        <span class="cen" id="tHidx">--</span>
+		                        <span class="artificial"  id="tHidxOne">--</span>
+		                    </div>
+		                    <div class="item">
+		                        <span class="index-name">QT间期(ms)</span>
+		                        <span class="cen" id="qtidx">--</span>
+		                        <span class="artificial" id="qtidxOne">--</span>
+		                    </div>
+		                </div>
+	            	</div>
+	            </div>    
+	            
+            </div>
+        </div>
+    </div>
+    <div id="m">
+        <div id="spinners">
+            <div id="preloader"></div>
+        </div>
+    </div>
+    <img id="print_img" src="" alt="">
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/alert.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="js/jquery.cookie.js"></script>-->
+    <script src="js/Print.js"></script>
+    <script src="js/print.min.js"></script>
+    <script src="js/jquery.hotkeys-0.7.9.min.js"></script>
+    <script src="js/jqColorPicker.min.js"></script>
+
+    <script type="text/javascript" src="js/global-tool.js"></script>
+    <script type="text/javascript" src="js/line.js"></script>
+    <script type="text/javascript" src="js/ruler.js"></script>
+    <script type="text/javascript" src="js/ecgdraw.copy.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="js/init.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/oper.js" charset="utf-8"></script>
+
+
+
+
+</body>
+
+</html>

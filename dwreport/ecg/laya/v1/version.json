@@ -1,0 +1,10 @@
+{
+  "fileconfig.json": "fileconfig-2a34e33901.json",
+  "index.js": "index-85e10f0052.js",
+  "js/bundle.js": "js/bundle-9564bcf080.js",
+  "libs/laya.core.js": "libs/laya-65472fb779.core.js",
+  "libs/laya.physics.js": "libs/laya-2d50b72365.physics.js",
+  "libs/laya.ui.js": "libs/laya-ded7177d91.ui.js",
+  "res/atlas/comp.atlas": "res/atlas/comp-00e969ccb5.atlas",
+  "res/atlas/comp.png": "res/atlas/comp-5fcbe06365.png"
+}

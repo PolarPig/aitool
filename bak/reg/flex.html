@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @media (max-width: 768px) {
+            .HolyGrail-body {
+                flex-direction: column;
+                flex: 1;
+            }
+
+            .HolyGrail-nav,
+            .HolyGrail-ads,
+            .HolyGrail-content {
+                flex: auto;
+            }
+        }
+
+        .HolyGrail {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header,
+        footer {
+            background-color: beige;
+            height: 60px;
+            width: 1440px;
+        }
+
+        header {
+            position: fixed;
+        }
+
+        .HolyGrail-body {
+            display: flex;
+            width: 1440px;
+            flex: 1;
+        }
+
+        .HolyGrail-content {
+            background-color: aqua;
+            width: 100%;
+        }
+
+        .HolyGrail-nav,
+        .HolyGrail-ads {
+            /* 两个边栏的宽度设为12em */
+            background-color: bisque
+        }
+
+        .HolyGrail-nav {
+            /* 导航放到最左边 */
+            order: -1;
+            width: 180px;
+        }
+
+        .HolyGrail-ads {
+            width: 288px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="HolyGrail">
+        <header>header</header>
+        <div class="HolyGrail-body">
+            <main class="HolyGrail-content">
+
+                <h1>测试JavaScript 命名空间</h1>
+
+                <input type="button" value="测试" OnClick="doTest();" title="doTest" />
+                <br />
+                输出:<br />
+                <textarea id="txtresult" rows="12" style="width:95%"></textarea>
+
+            </main>
+            <nav class="HolyGrail-nav">nav</nav>
+            <aside class="HolyGrail-ads">aside</aside>
+        </div>
+        <footer>footer</footer>
+    </div>
+    <script src="./namespace.js"></script>
+    <script>
+
+        function pow() {
+            let x = 2,
+                y;
+            for (y = 1; y < 19; y++) {
+                console.log(Math.pow(x, y));
+            }
+        };
+        pow();
+
+        /** 测试. */
+        function doTest() {
+            //alert(jsnamespace);
+            var p1 = new jsnamespace.PersonInfo();
+            p1.name = "Zhang San";    // 张三.
+            p1.gender = jsnamespace.GenderCode.MALE;
+            var p2 = new jsnamespace.PersonInfo({
+                "name": "Li Si",
+                "gender": jsnamespace.GenderCode.FEMALE
+            });    // 李四.
+            jsnamespace.PersonInfoUtil.show(p1);
+            jsnamespace.PersonInfoUtil.show(p2);
+
+            var c = jsnamespace.sub.Cat.createNew();
+            c.makeSound();
+        }
+
+
+
+        let NameSpace = window.NameSpace || {};
+
+        NameSpace.Hello = new function () {
+            let self = this;
+            let name = 'world';
+            self.sayHello = function (_name) {
+                return 'Hello ' + (_name || name);
+            };
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<script src="jquery-2.2.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="ecgdraw.css"/>
+
+	</head>
+	<body>
+		<div class="btn">
+			<button type="button"  id="lowgird" class="funcl">低格</button>
+			<button type="button"  id="gain5" class="funcl">增益5mm/mV</button>
+			<button type="button"  id="gain10" class="funcl">增益10mm/mV</button>
+			<button type="button"  id="gain20" class="funcl">增益20mm/mV</button>
+			<button type="button"  id="scale" class="funcl">标尺</button>
+			<button type="button"  id="lineBtn" class="funcl">测量尺</button>
+		</div>
+		<div class="clearfix" id="canvasDiv">
+			<canvas id="drawcanvas" width="990" height="700"></canvas>
+			<canvas id="navcanvas" width="990" height="90"></canvas>
+			<canvas id="chartcanvas" width="990" height="90"></canvas>
+		</div>
+		<div id="wrap" style="display:none;">
+			<input type="button" id="nid" value="N">
+			<input type="button" id="sid" value="S" style="color: red;">
+			<input type="button" id="vid" value="V" style="color: yellow;">
+		</div>
+		<div id="showqrs" class="showqrs">
+			<canvas id="qrs" width="950" height="441"></canvas>
+		</div>
+		<div id="rulerDiv" class="ruler">
+			<div class="rulerVertical"></div>
+			<div class="rulerHorizontal"></div>
+		</div>
+		<script>
+			// 心电波
+			var g_canvasId = "drawcanvas"
+			// 导航
+			var g_navcanvasId = "navcanvas"
+			// 导航 折线图
+			var g_chartcanvasId = "chartcanvas"
+			// 单导 QRS波
+			var g_qrscanvasId = "qrs"
+
+		</script>
+		<script src="ecgdraw.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

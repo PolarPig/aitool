@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zn">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div id="px-render"></div>
+
+    <script src="https://www.kkkk1000.com/js/pixi4.8.2.js"></script>
+    <script src="https://www.kkkk1000.com/js/spriteUtilities.js"></script>
+    <script src="https://www.kkkk1000.com/js/dust.js"></script>
+    <script>
+        //创建一个 Pixi应用 需要的一些参数
+        let option = {
+            width: 400,
+            height: 300,
+            transparent: true,
+        }
+        //创建一个 Pixi应用
+        let app = new PIXI.Application(option);
+        //获取舞台
+        let stage = app.stage;
+        //获取渲染器
+        let renderer = app.renderer;
+        let playground = document.getElementById('px-render');
+        //把 Pixi 创建的 canvas 添加到页面上
+        playground.appendChild(renderer.view);
+
+        let su = new SpriteUtilities(PIXI);
+        let d = new Dust(PIXI);
+		let particleStream;
+
+        //需要加载的图片的地址
+        let imgURL = "https://www.kkkk1000.com/images/learnPixiJS-ParticleEffects/star.png";
+        //加载图像，加载完成后执行setup函数 
+        PIXI.loader.add(imgURL).load(setup);
+
+        function setup() {
+           let particleStream = d.emitter(
+                100,
+                () => d.create(
+                    128, 128,
+                    () => su.sprite(imgURL),
+                    stage,
+                    30,
+                    0.1,
+                    false,
+                    3.14, 6.28,
+                    30, 60,
+                    1, 5
+                )
+            );
+
+			particleStream.play();
+            //开始游戏循环
+            gameLoop();
+        }
+
+        function gameLoop() {
+            requestAnimationFrame(gameLoop);
+            d.update();
+            renderer.render(stage);
+        }
+    </script>
+</body>
+
+</html>

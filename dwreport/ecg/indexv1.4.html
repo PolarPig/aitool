@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>实时心电图</title>
+	</head>
+
+	<body>
+		<div style="position: relative;">
+			<canvas id="lowgird" width="1512" height="2200" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+			<canvas id="ecg" width="1512" height="2200" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+
+			<p id="timetext" style="position: absolute; left: 0; top: 2204px; z-index: 0;">250采样率、750个点 一行跑完标准3秒</p>
+			<p id="timep" style="position: absolute; left: -10px; top: 2210px; z-index: 1;">0秒</p>
+
+		</div>
+		<script src="js/tool.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/ecgdata.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/drawecg-v1.5.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			// 低格图层    心电波层
+			new DrawEcg().init({
+				canconfig:{
+					canvas: "ecg",
+					lowgirdvas: 'lowgird',
+					timep: "timep"
+				},
+				drawconfig:[{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			},{
+				// 单导 
+				ecg:	  	{ datas: datas, idx:  1,color: "#32FF32",speed:  4},
+				// 单导 v1
+				ecgv1:		{ datas: datas3,idx:  2,color: "red",speed:  10},
+				// 单导 v2
+				ecgv2:		{datas: datas,	idx:  3,color: "yellow",speed:  11},
+				// 单导 v3
+				ecgv3:		{datas: datas3,	idx:  4,color: "#F08080",speed:  4},
+				// 呼吸
+				breathe:	{datas: datas,	idx:  5,color: "#7CFC00",speed:  60},
+				// 血养
+				blood:		{datas: datas3,	idx:  6,color: "#FF8C00",speed:  15},
+				// 血养
+				blood2:		{datas: datas,	idx:  7,color: "#FFD700",speed:  5},
+				// 血养
+				blood3:		{datas: datas3,	idx:  8,color: "#FF8C00",speed:  10},
+			}]
+			}).draw();
+								
+		</script>
+
+	</body>
+
+</html>

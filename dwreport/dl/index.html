@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+                <title>实时心电图</title>
+        </head>
+        <body>
+                <div style="position: relative;">
+                        <canvas id="lowgird" width="375" height="210" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg" width="375" height="210" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird2" width="375" height="210" style="position: absolute; left: 376px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg2" width="375" height="210" style="position: absolute; left: 376px; top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird3" width="375" height="210" style="position: absolute; left: 752px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg3" width="375" height="210" style="position: absolute; left: 752px; top: 0; z-index: 1;"></canvas>
+
+                        <canvas id="lowgird4" width="375" height="210" style="position: absolute;  left: 1128px; top: 0; z-index: 0;"></canvas>
+                        <canvas id="ecg4" width="375" height="210" style="position: absolute;  left: 1128px; top: 0;z-index: 1;"></canvas>
+
+
+                        
+
+
+                        <p id="timetext" style="position: absolute; left: 0; top: 210px; z-index: 0;">250采样率、750个点 一行跑完标准3秒</p>
+                        <p id="timep" style="position: absolute; left: 0; top: 230px; z-index: 1;">0秒</p>
+	
+                </div>
+
+                <script src="js/tool.js" type="text/javascript" charset="utf-8"></script>
+                <script src="js/ecgdata.js" type="text/javascript" charset="utf-8"></script>
+                <script type="text/javascript" src="js/realtimeecg5.js" ></script>
+                <script type="text/javascript">
+                        // 低格图层    心电波层
+                        ecgdraw(document.getElementById("lowgird"),document.getElementById("ecg"))
+                        ecgdraw(document.getElementById("lowgird2"),document.getElementById("ecg2"))
+                        ecgdraw(document.getElementById("lowgird3"),document.getElementById("ecg3"))
+                        ecgdraw(document.getElementById("lowgird4"),document.getElementById("ecg4"))
+                        
+
+                </script>
+
+        </body>
+</html>
