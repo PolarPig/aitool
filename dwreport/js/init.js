@@ -89,7 +89,7 @@ function get_QRS_data_by_fileid(anaecgFileid){
 	fetch(url, param).then(res => {
 		return res.json();
 	}).then(data => {
-//		console.log(data)
+		console.log(data)
 		if (data.respHead.respCode == '000') {
 			console.log('恢复成功！')
 			ecgdraw();
@@ -420,7 +420,8 @@ function get_zhibiao(reportId) {
             delete data.body.data.pageSize
             delete data.body.data.reportId
             delete data.body.data.updatedAt
-
+			
+//			console.log(data)
             Object.keys(data.body.data).forEach(function (key) {
                 //				console.log(key, data.body.data[key]);
 
@@ -439,6 +440,7 @@ function get_zhibiao(reportId) {
                 $("#" + key).css("modcss");
 
                 g_basic_index = data.body.data
+                g_qrs_h = data.body.data.qrsH;
                 //console.log(g_basic_index)
 
             });

@@ -273,6 +273,7 @@ $(function () {
 				console.log(res);
 			}
 		}).then(data => {
+//			console.log(data)
 			if (data.respHead != undefined && data.respHead.respCode == 002) {
 				alertx("登陆超时，请重新登陆!");
 				let localUrl = window.location.href
@@ -355,6 +356,7 @@ $(function () {
 						return
 					}
 					datas = ecgdata
+					console.log(datas)
 					g_data_total = ecgdata.length
 					for (let i = 0; i < datas.length; i++) {
 						let data = datas[i];
@@ -538,6 +540,7 @@ $(function () {
 				}
 			}
 		}
+		
 		//大于10000
 		if(g_index_data.get(id).maxeqd){
 			maxeqda = g_index_data.get(id).maxeq.maxeqd
@@ -548,6 +551,7 @@ $(function () {
 				}
 			}
 		}
+		
 		
 		
 	//   if(mineq !=undefined && max == undefined){
